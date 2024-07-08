@@ -1,14 +1,14 @@
 package config
 
 import (
-	"github.com/golang-jwt/jwt/v5"
-	"github.com/joho/godotenv"
-	echojwt "github.com/labstack/echo-jwt/v4"
-	"github.com/labstack/echo/v4"
 	"net/http"
 	"os"
 	"thegraduate-server/entities"
 	"thegraduate-server/model"
+
+	"github.com/golang-jwt/jwt/v5"
+	echojwt "github.com/labstack/echo-jwt/v4"
+	"github.com/labstack/echo/v4"
 )
 
 func JwtConfigEcho(c echo.Context) jwt.Claims {
@@ -16,11 +16,7 @@ func JwtConfigEcho(c echo.Context) jwt.Claims {
 }
 
 func SigningKey() string {
-	err := godotenv.Load()
 
-	if err != nil {
-		panic(err)
-	}
 	return os.Getenv("JWT_SECRET_KEY")
 }
 
