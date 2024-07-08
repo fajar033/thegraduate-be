@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"thegraduate-server/auth"
 	"thegraduate-server/config"
 	"thegraduate-server/graduate_form"
@@ -68,7 +69,14 @@ func main() {
 			})
 			e.HTTPErrorHandler = helper.ErrorHandler
 
-			e.Start("localhost:3000")
+			var port string = os.Getenv("PORT")
+
+			if port == "" {
+				port = "3000"
+			}
+
+			var hostPort string = "0.0.0.0:" + port
+			e.Start(hostPort)
 		}))
 
 	app.Run()
