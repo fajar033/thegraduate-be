@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"os"
 	"thegraduate-server/auth"
 	"thegraduate-server/config"
@@ -16,7 +15,6 @@ import (
 
 	"github.com/labstack/echo/v4"
 
-	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4/middleware"
 	"go.uber.org/fx"
 )
@@ -35,6 +33,7 @@ func InitEcho() *echo.Echo {
 }
 
 func main() {
+
 	app := fx.New(fx.Provide(InitEcho),
 		auth.AuthModule,
 		users.UserModule,
