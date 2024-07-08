@@ -35,13 +35,6 @@ func InitEcho() *echo.Echo {
 }
 
 func main() {
-
-	err := godotenv.Load()
-
-	if err != nil {
-		panic(fmt.Sprintf("error load env variable: %s", err.Error()))
-	}
-
 	app := fx.New(fx.Provide(InitEcho),
 		auth.AuthModule,
 		users.UserModule,
