@@ -42,7 +42,7 @@ func (s *studentDescRepository) GetStatisticStudent(ctx context.Context) map[str
 		panic(err)
 	}
 	var countNotVerified int64
-	err = s.db.WithContext(ctx).Table("students_description").Count(&countNotVerified).Error
+	err = s.db.WithContext(ctx).Table("students_description").Where("verification=?", "NOT_VERIFIED").Count(&countNotVerified).Error
 
 	var countTotalNotRegistered int64
 
