@@ -232,7 +232,7 @@ func (l *lecturerRepository) Insert(ctx context.Context, data entities.Lecturer)
 
 func (l *lecturerRepository) Update(ctx context.Context, data entities.Lecturer, nidn string) {
 
-	err := l.db.WithContext(ctx).Table("lecturer").Where("nidn=?", nidn).Updates(data).Error
+	err := l.db.WithContext(ctx).Table("lecturer").Where("nidn=?", nidn).Updates(&data).Error
 
 	if err != nil {
 		panic(err)
