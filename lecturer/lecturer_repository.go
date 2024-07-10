@@ -25,7 +25,7 @@ func NewLecturerRepository(db *gorm.DB) interfaces.ILecturerRepository {
 func (l *lecturerRepository) FindOneLecturerById(ctx context.Context, id string) (*entities.Lecturer, error) {
 
 	var result *entities.Lecturer
-	err :=	l.db.WithContext(ctx).Table("lecturer").Where("nidn=?", id).First(&result).Error
+	err := l.db.WithContext(ctx).Table("lecturer").Where("nidn=?", id).First(&result).Error
 
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
@@ -43,7 +43,7 @@ func (l *lecturerRepository) FindAllDocuments(ctx context.Context, nidn string, 
 	var results []entities.Student
 	var err error
 	db := l.db.WithContext(ctx).Table("students_description")
-	
+
 	if name != "" {
 		db = db.Where("first_name LIKE ? OR last_name LIKE ?", "%"+name+"%", "%"+name+"%")
 
@@ -112,44 +112,56 @@ func (l *lecturerRepository) GetTotalStatic(ctx context.Context) map[string]any 
 
 	var count int64
 	err := l.db.WithContext(ctx).Table("lecturer").Count(&count).Error
+	if err != nil {
+		panic(err)
+	}
 
 	var countAdvisorLetter int64
 
-	err = l.db.WithContext(ctx).Table("documents_admin").Where("advisor_assignment_letter IS NOT NULL").Count(&countAdvisorLetter).Error
+	err = l.db.WithContext(ctx).Table("documents_admin").Where("advisor_assignment_letter != '' ").Count(&countAdvisorLetter).Error
+	if err != nil {
+		panic(err)
+	}
 
 	var countExaminerLetter int64
 
-	err = l.db.WithContext(ctx).Table("documents_admin").Where("examiner_assignment_letter IS NOT NULL").Count(&countExaminerLetter).Error
+	err = l.db.WithContext(ctx).Table("documents_admin").Where("examiner_assignment_letter !='' ").Count(&countExaminerLetter).Error
+	if err != nil {
+		panic(err)
+	}
 
 	var countInvitationLetter int64
 
-	err = l.db.WithContext(ctx).Table("documents_admin").Where("invitation IS NOT NULL").Count(&countInvitationLetter).Error
+	err = l.db.WithContext(ctx).Table("documents_admin").Where("invitation !='' ").Count(&countInvitationLetter).Error
+	if err != nil {
+		panic(err)
+	}
 
 	var countTempGrade int64
-	err = l.db.WithContext(ctx).Table("documents_admin").Where("temp_grad IS NOT NULL").Count(&countTempGrade).Error
+	err = l.db.WithContext(ctx).Table("documents_admin").Where("temp_grad != '' ").Count(&countTempGrade).Error
+	if err != nil {
+		panic(err)
+	}
 
 	var officialReport int64
 
-	err = l.db.WithContext(ctx).Table("documents_admin").Where("official_report IS NOT NULL").Count(&officialReport).Error
+	err = l.db.WithContext(ctx).Table("documents_admin").Where("official_report != '' ").Count(&officialReport).Error
 
 	if err != nil {
 		panic(err)
 	}
 
 	var data map[string]any = map[string]any{
-		"total_lecturer": count,
-		"total_examiner_lette": countExaminerLetter,
-		"total_invitation": countInvitationLetter,
+		"total_lecturer":        count,
+		"total_examiner_lette":  countExaminerLetter,
+		"total_invitation":      countInvitationLetter,
 		"total_official_report": officialReport,
-		"total_advisor_letter": countAdvisorLetter,
-		"total_temp_grad": countTempGrade,
+		"total_advisor_letter":  countAdvisorLetter,
+		"total_temp_grad":       countTempGrade,
 	}
 
 	return data
 }
-
-
-
 
 func (l *lecturerRepository) FindDocumentByStudentAndNidn(ctx context.Context, studentId string, nidn string) (entities.DocumentAdminEntity, error) {
 	//TODO implement me
