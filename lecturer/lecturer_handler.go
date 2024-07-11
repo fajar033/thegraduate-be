@@ -26,7 +26,7 @@ func (l *lecturerHandler) FindOneLecturer(e echo.Context) error {
 
 	id := e.Param("id")
 
-	result,_ := l.repo.FindOneLecturerById(context.Background(), id)
+	result, _ := l.repo.FindOneLecturerById(context.Background(), id)
 
 	return e.JSON(200, model.ResponseModel{
 		Data:    result,
@@ -36,8 +36,8 @@ func (l *lecturerHandler) FindOneLecturer(e echo.Context) error {
 }
 
 func (l *lecturerHandler) GetStaticLecturer(e echo.Context) error {
-	//TODO implement me
-	var total = l.repo.GetTotalStatic(context.Background())
+	nidn := e.QueryParam("nidn")
+	var total = l.repo.GetTotalStatic(context.Background(), nidn)
 	return e.JSON(200, model.ResponseModel{
 		Data:    total,
 		Message: "success retrieved total data",

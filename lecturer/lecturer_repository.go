@@ -107,7 +107,7 @@ func (l *lecturerRepository) FindAllDocuments(ctx context.Context, nidn string, 
 
 }
 
-func (l *lecturerRepository) GetTotalStatic(ctx context.Context) map[string]any {
+func (l *lecturerRepository) GetTotalStatic(ctx context.Context, nidn string) map[string]any {
 	//TODO implement me
 
 	var count int64
@@ -118,34 +118,34 @@ func (l *lecturerRepository) GetTotalStatic(ctx context.Context) map[string]any 
 
 	var countAdvisorLetter int64
 
-	err = l.db.WithContext(ctx).Table("documents_admin").Where("advisor_assignment_letter != '' ").Count(&countAdvisorLetter).Error
+	err = l.db.WithContext(ctx).Table("documents_admin").Where("advisor_assignment_letter != '' AND nidn=?", nidn).Count(&countAdvisorLetter).Error
 	if err != nil {
 		panic(err)
 	}
 
 	var countExaminerLetter int64
 
-	err = l.db.WithContext(ctx).Table("documents_admin").Where("examiner_assignment_letter !='' ").Count(&countExaminerLetter).Error
+	err = l.db.WithContext(ctx).Table("documents_admin").Where("examiner_assignment_letter !='' AND nidn=?", nidn).Count(&countExaminerLetter).Error
 	if err != nil {
 		panic(err)
 	}
 
 	var countInvitationLetter int64
 
-	err = l.db.WithContext(ctx).Table("documents_admin").Where("invitation !='' ").Count(&countInvitationLetter).Error
+	err = l.db.WithContext(ctx).Table("documents_admin").Where("invitation !='' AND nidn=?", nidn).Count(&countInvitationLetter).Error
 	if err != nil {
 		panic(err)
 	}
 
 	var countTempGrade int64
-	err = l.db.WithContext(ctx).Table("documents_admin").Where("temp_grad != '' ").Count(&countTempGrade).Error
+	err = l.db.WithContext(ctx).Table("documents_admin").Where("temp_grad != '' AND nidn=?", nidn).Count(&countTempGrade).Error
 	if err != nil {
 		panic(err)
 	}
 
 	var officialReport int64
 
-	err = l.db.WithContext(ctx).Table("documents_admin").Where("official_report != '' ").Count(&officialReport).Error
+	err = l.db.WithContext(ctx).Table("documents_admin").Where("official_report != '' AND nidn=?", nidn).Count(&officialReport).Error
 
 	if err != nil {
 		panic(err)

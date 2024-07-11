@@ -21,12 +21,12 @@ type ILecturerHandler interface {
 	UploadExaminerAssignmentLetter(e echo.Context) error
 	UploadDocsOfficialReport(e echo.Context) error
 	FindAllDocuments(e echo.Context) error
-	FindOneLecturer(e echo.Context)error
+	FindOneLecturer(e echo.Context) error
 }
 
 type ILecturerRepository interface {
-	FindOneLecturerById( ctx context.Context, id string) (*entities.Lecturer, error)
-	GetTotalStatic(ctx context.Context) map[string]any
+	FindOneLecturerById(ctx context.Context, id string) (*entities.Lecturer, error)
+	GetTotalStatic(ctx context.Context, nidn string) map[string]any
 	FindDocumentByStudentAndNidn(ctx context.Context, studentId string, nidn string) (entities.DocumentAdminEntity, error)
 	FindOneById(ctx context.Context, id string) (map[string]any, error)
 	Insert(ctx context.Context, data entities.Lecturer)
